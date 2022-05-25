@@ -35,4 +35,17 @@ RSpec.describe "Admin Application Show Page" do
     expect(page).to_not have_button("Reject")
     expect(page).to have_content("Rejected!")
   end
+
+  it 'can see a pet approved on one application, but still shows the buttons for approval on other apps' do
+    @bob.pets << @doggo
+
+    visit "/admin/applications/#{@oprah.id}"
+    click_button "Approve"
+    expect(page).to have_content("Sylus Approved!")
+
+    visit "/admin/applications/#{@bob.id}"
+    expect(page).to have_button("Approve")
+    expect(page).to have_button("Reject")
+
+  end
 end
